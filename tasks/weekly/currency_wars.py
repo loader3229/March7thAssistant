@@ -387,7 +387,7 @@ class CurrencyWars:
             log.info("选择超频博弈")
             screen.change_to("currency_wars_mode_select_overclock")
 
-        if not self.choose_level(1):
+        if not self.choose_level(["current","lowest","highest"].index(cfg.currencywars_rank_difficulty)):
             log.error("选择关卡失败，结束任务")
             return False
 
@@ -401,15 +401,16 @@ class CurrencyWars:
     def choose_level(self, level: int) -> bool:
         """
         选择关卡难度
+        level为0表示当前职级难度，1表示最低职级难度，2表示最高职级难度
         """
         log.info("选择关卡")
         # 避免低性能设备加载过慢
         time.sleep(6)  # 等待界面加载
 
-        if cfg.currencywars_rank_difficulty == "current":
+        if level == 0:
             log.info("保持当前职级，不调整关卡难度")
             return True
-        elif cfg.currencywars_rank_difficulty == "highest":
+        elif level == 2:
             for _ in range(10):
                 if auto.click_element("返回最高职级", "text", crop=(1326 / 1920, 947 / 1080, 137 / 1920, 37 / 1080)):
                     time.sleep(2)
